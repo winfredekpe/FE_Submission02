@@ -1,0 +1,93 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: #d8d8d8;
+  justify-content: space-between;
+  align-items: center;
+  /* background: red; */
+}
+
+/* side bar options */
+.container > .left {
+  width: 13%;
+  height: 100%;
+  border-right: 2px solid #959595;
+}
+
+.container > .left > .logo {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding-top: 1rem;
+}
+
+.container > .left > .option {
+  width: 100%;
+  margin-top: 1.5rem;
+  font-size: 17px;
+  text-align: left;
+  /* background: #000; */
+  cursor: pointer;
+}
+
+.container > .left > .option > .link {
+  margin-left: 3rem;
+}
+
+/* rifht side options */
+.container > .right {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container > .right > .top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.container > .right > .top > .inner {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.top .search {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.search input {
+  padding: 6px;
+  background: none;
+}
+
+.right .products {
+  width: 80%;
+  height: 80%;
+  padding: 1rem;
+  border: 2px solid #959595;
+  /* background-color: aqua; */
+}
+
+.pagination {
+  width: 80%;
+  padding: 1rem;
+}
