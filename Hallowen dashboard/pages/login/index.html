@@ -16,15 +16,21 @@
           <img class="right" src="../../assets/Freddys_Logo.svg" alt="" />
         </div>
 
+        <!-- error message -->
+        <div id="error"></div>
+
         <!-- input section -->
         <div class="form">
           <label for="username">Username</label>
-          <input type="text" class="input" name="username" id="" />
+          <input type="text" class="input" name="username" id="username" />
           <label for="password">Password</label>
-          <input type="password" class="input" name="password" id="" />
-          <button type="submit" class="submit">Login</button>
+          <input type="password" class="input" name="password" id="password" />
+          <button type="submit" class="submit" onclick="login()" id="submit">
+            Login
+          </button>
         </div>
       </div>
     </div>
+    <script src="index.js"></script>
   </body>
 </html>
