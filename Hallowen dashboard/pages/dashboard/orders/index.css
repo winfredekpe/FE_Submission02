@@ -40,8 +40,12 @@ body {
   cursor: pointer;
 }
 
-.container > .left > .option > .link {
+.option > .link {
   margin-left: 3rem;
+}
+.option > .link > a {
+  text-decoration: none;
+  color: inherit;
 }
 
 /* rifht side options */
@@ -90,4 +94,9 @@ body {
 .pagination {
   width: 80%;
   padding: 1rem;
+}
+
+/* table */
+thead {
+  text-align: left;
 }
