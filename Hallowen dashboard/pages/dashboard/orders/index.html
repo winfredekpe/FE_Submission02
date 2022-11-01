@@ -32,7 +32,7 @@
             <div class="left">Orders</div>
             <div class="search">
               <div class="icon">icon</div>
-              <input type="search" name="" id="" />
+              <input id="searchbox" type="search" />
             </div>
           </div>
         </div>
@@ -49,19 +49,18 @@
               <!-- </tr> -->
             </thead>
 
-            <tbody>
-              <tr>
-                <td>hi</td>
-                <td>hi</td>
-                <td>hi</td>
-                <td>hi</td>
-              </tr>
-            </tbody>
+            <!-- orders -->
+            <tbody id="orders"></tbody>
           </table>
         </div>
 
         <!-- pagination -->
-        <div class="pagination">page 1 of 50</div>
+        <div class="pagination">
+          <button id="prev">prev</button>
+          page <span id="current">0</span> of
+          <span id="all">0</span>
+          <button id="next">next</button>
+        </div>
       </div>
     </div>
     <script type="module" src="./index.js"></script>
