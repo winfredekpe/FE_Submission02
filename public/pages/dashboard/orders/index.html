@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body id="body">
+    <div class="container">
+      <div class="left">
+        <div class="logo">
+          <img
+            width="120px"
+            src="../../../assets/Freddys_Logo.svg"
+            alt="logo"
+          />
+        </div>
+        <div class="option">
+          <div class="link"><a href="../overview/index.html">Dashboard</a></div>
+        </div>
+        <div class="option"><div class="link">Orders</div></div>
+        <div class="option">
+          <div class="link" id="logout">Logout</div>
+        </div>
+      </div>
+
+      <!-- right -->
+      <div class="right">
+        <!-- search bar section -->
+        <div class="top">
+          <div class="inner">
+            <div class="left">Orders</div>
+            <div class="search">
+              <div class="icon">icon</div>
+              <input id="searchbox" type="search" />
+            </div>
+          </div>
+        </div>
+
+        <!-- product list table -->
+        <div class="products">
+          <table width="100%">
+            <thead>
+              <!-- <tr> -->
+              <th>Product Name</th>
+              <th>Date</th>
+              <th>Price</th>
+              <th>status</th>
+              <!-- </tr> -->
+            </thead>
+
+            <!-- orders -->
+            <tbody id="orders"></tbody>
+          </table>
+        </div>
+
+        <!-- pagination -->
+        <div class="pagination">
+          <button id="prev">prev</button>
+          page <span id="current">0</span> of
+          <span id="all">0</span>
+          <button id="next">next</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>

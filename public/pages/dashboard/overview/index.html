@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body id="body">
+    <div class="container">
+      <!-- left -->
+      <div class="left">
+        <div class="logo">
+          <img
+            width="120px"
+            src="../../../assets/Freddys_Logo.svg"
+            alt="logo"
+          />
+        </div>
+        <div class="option"><div class="link">Dashboard</div></div>
+        <div class="option">
+          <div class="link"><a href="../orders/index.html">Orders</a></div>
+        </div>
+        <div class="option">
+          <div class="link" id="logout">Logout</div>
+        </div>
+      </div>
+
+      <!-- right -->
+      <div class="right">
+        <!-- search bar section -->
+        <div class="top">Dashboard</div>
+
+        <!-- card -->
+        <div class="cards">
+          <div class="card">
+            <div class="label">Today</div>
+            <div class="info">$1456 / 9 orders</div>
+          </div>
+          <div class="card">
+            <div class="label">Last Week</div>
+            <div class="info">$1456 / 9 orders</div>
+          </div>
+          <div class="card">
+            <div class="label">Last Month</div>
+            <div class="info">$1456 / 9 orders</div>
+          </div>
+        </div>
+
+        <!-- chart -->
+        <div class="chartoption">
+          <div class="label" id="labelleft">Revenue ( Last 7 days )</div>
+          <div>
+            <span id="togglelabel">See Yearly Revenue</span>
+            <input id="charttoggle" type="checkbox" />
+          </div>
+        </div>
+        <div class="chart">
+          <div class="chartcontainer">
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+
+        <!-- product list table -->
+        <div class="top">Best Sellers</div>
+        <div class="products">
+          <table width="100%">
+            <thead>
+              <!-- <tr> -->
+              <th>Product Name</th>
+              <th>Unit Sold</th>
+              <th>Revenue</th>
+              <th>Image</th>
+              <!-- </tr> -->
+            </thead>
+
+            <!-- best selling products -->
+            <tbody id="bestseller"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script type="module" src="./index.js"></script>
+  </body>
+</html>
