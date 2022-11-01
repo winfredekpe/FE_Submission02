@@ -1,16 +1,31 @@
-import { getCookie, refreshToken } from "../../../lib/index.js";
+import { getCookie, refreshToken, logout } from "../../../lib/index.js";
 
 let bestseller = document.getElementById("bestseller");
+let logoutbtn = document.getElementById("logout");
+let chartToggle = document.getElementById("charttoggle");
+let toggleLabel = document.getElementById("togglelabel");
+let labelLeft = document.getElementById("labelleft");
+
+// globals
+let currentChart;
 
 // endpoints
 let dashboardUrl = "https://freddy.codesubmit.io/dashboard";
 
 // adding eventlisteners
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   refreshToken();
-  getDashboardData();
-});
+  let resp = await getDashboardData();
+  let { bestsellers, sales_over_time_week, sales_over_time_year } =
+    resp?.dashboard;
 
+  renderChart(sales_over_time_week, sales_over_time_year);
+  renderBestsellers(bestsellers);
+});
+logoutbtn.addEventListener("click", logout);
+chartToggle.addEventListener("change", handleChartToggle);
+
+// callbacks
 async function getDashboardData() {
   let token = getCookie("usrtkn");
   let res = await fetch(dashboardUrl, {
@@ -21,45 +36,113 @@ async function getDashboardData() {
     method: "GET",
   });
   let resp = await res.json();
+  return resp;
+}
+
+async function handleChartToggle() {
+  let status = chartToggle.checked;
+  let resp = await getDashboardData();
   let { bestsellers, sales_over_time_week, sales_over_time_year } =
     resp?.dashboard;
 
-  renderChart(sales_over_time_week, sales_over_time_year);
-  renderBestsellers(bestsellers);
+  // destroying old chart
+  currentChart.destroy();
+  if (status) {
+    toggleLabel.textContent = "See Weekly Orders";
+    labelLeft.textContent = "Revenue ( Last 12 Months )";
+    renderChart(sales_over_time_week, sales_over_time_year, "yearly");
+  }
+  if (!status) {
+    toggleLabel.textContent = "See Monthly Orders";
+    labelLeft.textContent = "Revenue ( Last 7 days )";
+    renderChart(sales_over_time_week, sales_over_time_year, "weekly");
+  }
 }
 
 // renderers
+function renderChart(weekly, yearly, type = "weekly") {
+  yearly = Object.values(yearly);
+  weekly = Object.values(weekly);
 
-function renderChart(weekly, yearly) {
+  let yearlyData = {
+    labels: [
+      "This month",
+      "last month",
+      "month3",
+      "month4",
+      "month5",
+      "month6",
+      "month7",
+      "month8",
+      "month9",
+      "month10",
+      "month11",
+      "month12",
+    ],
+    datasets: [
+      {
+        label: "Number of Orders  monthly",
+        data: yearly?.map((item) => {
+          return item?.total;
+        }),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  let weeklyData = {
+    labels: ["today", "yesterday", "day3", "day4", "day5", "day6", "day7"],
+    datasets: [
+      {
+        label: "Number of Orders daily",
+        data: weekly?.map((item) => {
+          return item?.total;
+        }),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   const ctx = document.getElementById("myChart").getContext("2d");
   const myChart = new Chart(ctx, {
     type: "bar",
-    data: {
-      labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-      datasets: [
-        {
-          label: "# of Votes",
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-            "rgba(255, 99, 132, 0.2)",
-            "rgba(54, 162, 235, 0.2)",
-            "rgba(255, 206, 86, 0.2)",
-            "rgba(75, 192, 192, 0.2)",
-            "rgba(153, 102, 255, 0.2)",
-            "rgba(255, 159, 64, 0.2)",
-          ],
-          borderColor: [
-            "rgba(255, 99, 132, 1)",
-            "rgba(54, 162, 235, 1)",
-            "rgba(255, 206, 86, 1)",
-            "rgba(75, 192, 192, 1)",
-            "rgba(153, 102, 255, 1)",
-            "rgba(255, 159, 64, 1)",
-          ],
-          borderWidth: 1,
-        },
-      ],
-    },
+    data: type === "weekly" ? weeklyData : yearlyData,
     options: {
       scales: {
         y: {
@@ -68,9 +151,12 @@ function renderChart(weekly, yearly) {
       },
     },
   });
+
+  // needs to be destroyed before new one can be assigned the the canvas
+  currentChart = myChart;
 }
 
-function RebderCards(data) {}
+function RenderCards(data) {}
 
 function renderBestsellers(data) {
   data.map((item) => {

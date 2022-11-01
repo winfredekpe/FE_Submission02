@@ -51,3 +51,17 @@ export async function refreshToken() {
   let { access_token } = resp;
   setCookie("usrtkn", access_token);
 }
+
+export function logout() {
+  ["usrtkn,", "usrrfsh"].forEach((cookie) => {
+    if (getCookie(cookie)) {
+      document.cookie =
+        cookie +
+        "=" +
+        (path ? ";path=" + path : "") +
+        (domain ? ";domain=" + domain : "") +
+        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    }
+  });
+  goTo("../index.html");
+}

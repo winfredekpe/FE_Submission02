@@ -1,4 +1,4 @@
-import { getCookie, refreshToken } from "../../../lib/index.js";
+import { getCookie, refreshToken, logout } from "../../../lib/index.js";
 
 let bestseller = document.getElementById("orders");
 let search = document.getElementById("searchbox");
@@ -6,6 +6,7 @@ let prev = document.getElementById("prev");
 let next = document.getElementById("next");
 let current = document.getElementById("current");
 let all = document.getElementById("all");
+let logoutbtn = document.getElementById("logout");
 
 // endpoints
 let dashboardUrl = "https://freddy.codesubmit.io/orders";
@@ -20,7 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 search.addEventListener("change", handleSearch);
 next.addEventListener("click", handlePagination);
 prev.addEventListener("click", handlePagination);
+logoutbtn.addEventListener("click", logout);
 
+// callbacks
 async function getDashboardData() {
   let token = getCookie("usrtkn");
   let res = await fetch(dashboardUrl, {
@@ -94,8 +97,6 @@ function renderOrders(orders, clearOldOrders = false) {
 
 async function handleSearch(e) {
   let query = e.target.value;
-
-  console.log(query);
 
   let token = getCookie("usrtkn");
   let res = await fetch(searchUrl + query, {
