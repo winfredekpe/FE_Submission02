@@ -105,6 +105,12 @@ body {
 .chart {
   width: 80%;
   height: auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+.chartcontainer {
+  width: 90%;
 }
 
 /* table */
