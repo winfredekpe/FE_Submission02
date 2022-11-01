@@ -98,3 +98,10 @@ body {
   width: 80%;
   height: auto;
 }
+
+/* table */
+
+thead {
+  padding: 1rem;
+  text-align: left;
+}
