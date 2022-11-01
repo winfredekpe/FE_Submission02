@@ -7,13 +7,21 @@ export function setErrorMessage(message) {
 }
 
 export function setCookie(name, value, days) {
-  var expires = "";
+  let expires = "";
   if (days) {
     let date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
+    expires = date.toUTCString();
   }
-  document.cookie = name + "=" + value + expires + "; path=/";
+
+  document.cookie =
+    name +
+    "=" +
+    value +
+    ";path=/" +
+    // ";domain=" +
+    ";expires=" +
+    expires;
 }
 
 export function getCookie(name) {
@@ -49,19 +57,17 @@ export async function refreshToken() {
   });
   let resp = await res.json();
   let { access_token } = resp;
-  setCookie("usrtkn", access_token);
+  if (access_token) {
+    setCookie("usrtkn", access_token);
+  }
 }
 
-export function logout() {
-  ["usrtkn,", "usrrfsh"].forEach((cookie) => {
+export function logout(url) {
+  ["usrtkn", "usrrfsh"].forEach((cookie) => {
     if (getCookie(cookie)) {
-      document.cookie =
-        cookie +
-        "=" +
-        (path ? ";path=" + path : "") +
-        (domain ? ";domain=" + domain : "") +
-        ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      setCookie("usrtkn", "", 0);
+      setCookie("usrrfsh", "", 0);
     }
   });
-  goTo("../index.html");
+  goTo(url);
 }

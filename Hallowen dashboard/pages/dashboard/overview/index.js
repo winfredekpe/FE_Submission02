@@ -14,6 +14,7 @@ let dashboardUrl = "https://freddy.codesubmit.io/dashboard";
 
 // adding eventlisteners
 document.addEventListener("DOMContentLoaded", async () => {
+  checkAuth();
   refreshToken();
   let resp = await getDashboardData();
   let { bestsellers, sales_over_time_week, sales_over_time_year } =
@@ -22,7 +23,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderChart(sales_over_time_week, sales_over_time_year);
   renderBestsellers(bestsellers);
 });
-logoutbtn.addEventListener("click", logout);
+logoutbtn.addEventListener("click", () => {
+  logout("/index.html");
+});
 chartToggle.addEventListener("change", handleChartToggle);
 
 // callbacks
@@ -39,6 +42,16 @@ async function getDashboardData() {
   return resp;
 }
 
+// checks authentication before allowing the user to the dashboard
+function checkAuth() {
+  if (
+    Boolean(getCookie("usrtkn")) === false &&
+    Boolean(getCookie("usrrfsh")) === false
+  ) {
+    return logout("/index.html");
+  }
+}
+
 async function handleChartToggle() {
   let status = chartToggle.checked;
   let resp = await getDashboardData();
@@ -48,12 +61,12 @@ async function handleChartToggle() {
   // destroying old chart
   currentChart.destroy();
   if (status) {
-    toggleLabel.textContent = "See Weekly Orders";
+    toggleLabel.textContent = "See Weekly Revenue";
     labelLeft.textContent = "Revenue ( Last 12 Months )";
     renderChart(sales_over_time_week, sales_over_time_year, "yearly");
   }
   if (!status) {
-    toggleLabel.textContent = "See Monthly Orders";
+    toggleLabel.textContent = "See Yearly Revenue";
     labelLeft.textContent = "Revenue ( Last 7 days )";
     renderChart(sales_over_time_week, sales_over_time_year, "weekly");
   }
@@ -81,7 +94,7 @@ function renderChart(weekly, yearly, type = "weekly") {
     ],
     datasets: [
       {
-        label: "Number of Orders  monthly",
+        label: "Revenue Genrated Monthly",
         data: yearly?.map((item) => {
           return item?.total;
         }),
@@ -112,7 +125,7 @@ function renderChart(weekly, yearly, type = "weekly") {
     labels: ["today", "yesterday", "day3", "day4", "day5", "day6", "day7"],
     datasets: [
       {
-        label: "Number of Orders daily",
+        label: "Revenue Genrated Daily",
         data: weekly?.map((item) => {
           return item?.total;
         }),
@@ -175,7 +188,7 @@ function renderBestsellers(data) {
     td2.textContent = units;
 
     let td3 = document.createElement("td");
-    td3.textContent = revenue;
+    td3.textContent = "$" + revenue;
 
     let img = document.createElement("img");
     img.src = image;

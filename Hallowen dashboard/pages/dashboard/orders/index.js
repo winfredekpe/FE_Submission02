@@ -1,4 +1,4 @@
-import { getCookie, refreshToken, logout } from "../../../lib/index.js";
+import { getCookie, refreshToken, logout, goTo } from "../../../lib/index.js";
 
 let bestseller = document.getElementById("orders");
 let search = document.getElementById("searchbox");
@@ -15,13 +15,16 @@ let paginationUrl = "https://freddy.codesubmit.io/orders?page=";
 
 // adding eventlisteners
 document.addEventListener("DOMContentLoaded", () => {
+  checkAuth();
   refreshToken();
   getDashboardData();
 });
 search.addEventListener("change", handleSearch);
 next.addEventListener("click", handlePagination);
 prev.addEventListener("click", handlePagination);
-logoutbtn.addEventListener("click", logout);
+logoutbtn.addEventListener("click", () => {
+  logout("/index.html");
+});
 
 // callbacks
 async function getDashboardData() {
@@ -37,6 +40,16 @@ async function getDashboardData() {
   let { orders, page, total } = resp;
   renderOrders(orders);
   setPagination(page, total);
+}
+
+// checks authentication before allowing the user to the dashboard
+function checkAuth() {
+  if (
+    Boolean(getCookie("usrtkn")) === false &&
+    Boolean(getCookie("usrrfsh")) === false
+  ) {
+    return logout("/index.html");
+  }
 }
 
 // renderers
@@ -62,17 +75,17 @@ function renderOrders(orders, clearOldOrders = false) {
     td2.textContent = created_at;
 
     let td3 = document.createElement("td");
-    td3.textContent = total;
+    td3.textContent = "$" + total;
 
     // color for status
     let td4 = document.createElement("td");
-    td3.textContent = status;
+    td4.textContent = status;
     switch (status) {
       case "processing":
-        td3.style.color = "red";
+        td4.style.color = "red";
         break;
       case "delivered":
-        td3.style.color = "green";
+        td4.style.color = "green";
         break;
       case "shipped":
         td3.style.color = "black";

@@ -45,14 +45,14 @@ async function login(e) {
     }
 
     setCookie("usrtkn", access_token);
-    setCookie("usrrfsh", refresh_token);
+    setCookie("usrrfsh", refresh_token, 30);
 
     refreshToken();
 
-    // cron to refresh token every 5 minutes since the access_token expires in 5 minutes
+    // cron to refresh token every 14 minutes since the access_token expires in 15 minutes
     setInterval(() => {
       refreshToken();
-    }, 4 * 60 * 1000);
+    }, 14 * 60 * 1000);
 
     // redirect to dashboard overview
     goTo("pages/dashboard/overview/index.html");
